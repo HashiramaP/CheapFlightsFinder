@@ -1,0 +1,95 @@
+
+import openpyxl
+import bs4
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from fake_useragent import UserAgent
+from openpyxl import Workbook, load_workbook
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from time import sleep
+
+iteration = 0
+flights_of_interest = []
+running = True
+while running:
+    iteration += 1
+    if iteration == 1000:
+        running = False
+    else:
+        try:
+            print("Iteration: ", iteration)
+            book = load_workbook('Blank.xlsx') #excel file with the data
+            sheet = book.active #active sheet
+
+            travel_links = {
+                "America": "https://www.google.com/travel/flights?tfs=CBwQARooEgoyMDIzLTEyLTI3agwIAhIIL20vMHBtcDJyDAgEEggvbS8wNTlnNBooEgoyMDI0LTAxLTA3agwIBBIIL20vMDU5ZzRyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                "Caribbean": "https://www.google.com/travel/flights?tfs=CBwQARooEgoyMDIzLTEyLTI3agwIAhIIL20vMHBtcDJyDAgEEggvbS8wMjYxbRooEgoyMDI0LTAxLTA3agwIBBIIL20vMDI2MW1yDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                "Europe": "https://www.google.com/travel/flights?tfs=CBwQARooEgoyMDIzLTEyLTI3agwIAhIIL20vMHBtcDJyDAgEEggvbS8wMmo5ehooEgoyMDI0LTAxLTA3agwIBBIIL20vMDJqOXpyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                #"Asia": "https://www.google.com/travel/flights?tfs=CBwQARobagwIAhIIL20vMHBtcDJyCwgEEgcvbS8wajBrGhtqCwgEEgcvbS8wajBrcgwIAhIIL20vMHBtcDJAAUgBcAGCAQsI____________AZgBAQ&tfu=KgIIAw",
+                #"Africa": "https://www.google.com/travel/flights?tfs=CBwQARodagwIAhIIL20vMHBtcDJyDQgEEgkvbS8wZGczbjEaHWoNCAQSCS9tLzBkZzNuMXIMCAISCC9tLzBwbXAyQAFIAXABggELCP___________wGYAQE&tfu=KgIIAw&hl=fr",
+                #"Oceania": "https://www.google.com/travel/flights?tfs=CBwQARocagwIAhIIL20vMHBtcDJyDAgEEggvbS8wNW5yZxocagwIBBIIL20vMDVucmdyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                #"Middle East": "https://www.google.com/travel/flights?tfs=CBwQARocagwIAhIIL20vMHBtcDJyDAgEEggvbS8wNHdzehocagwIBBIIL20vMDR3c3pyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                "South America": "https://www.google.com/travel/flights?tfs=CBwQARooEgoyMDIzLTEyLTI3agwIAhIIL20vMHBtcDJyDAgEEggvbS8wNm4zeRooEgoyMDI0LTAxLTA3agwIBBIIL20vMDZuM3lyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+                "Central America": "https://www.google.com/travel/flights?tfs=CBwQARooEgoyMDIzLTEyLTI3agwIAhIIL20vMHBtcDJyDAgEEggvbS8wMXR6aBooEgoyMDI0LTAxLTA3agwIBBIIL20vMDF0emhyDAgCEggvbS8wcG1wMkABSAFwAYIBCwj___________8BmAEB&tfu=KgIIAw&hl=fr",
+            }
+
+            driver = webdriver.Chrome()
+
+            driver.get("https://www.google.com/travel/flights?tcfs&ved=2ahUKEwi_5dndsrCBAxUmi8UCHZEWAosQ0I8EegQIAxAK&ictx=2")
+
+            vacations = []
+
+            for i in travel_links:
+                vacations.append(i)
+
+            for num, dest in enumerate(vacations):
+                driver.get(travel_links[dest])
+                Departure = driver.find_element(By.CLASS_NAME, "II2One") # find the search box for departure
+                Departure.clear() # clear the cell
+                Departure.send_keys("Toronto") # add departure city
+                sleep(1)
+                search = driver.find_element(By.CLASS_NAME, "CwL3Ec") # find the city button
+                search.click() # click the city button
+                #enter
+                Departure.send_keys(Keys.ENTER)
+
+                #scroll al the way down
+                sleep(5)
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                
+                try:
+                    main = WebDriverWait(driver, 30).until(
+                            EC.presence_of_all_elements_located((By.CLASS_NAME, "SD4Ugf"))
+                        )   
+                    destinations = driver.find_elements(By.CLASS_NAME, "lPyEac") # find the search box for destination
+                        
+                    for i, destination in enumerate(destinations):
+                        if i >= 3:
+                            #add the continet in the excel file
+                            sheet.cell(row=1, column = num*5+1).value = dest
+                            City = destination.find_element(By.CLASS_NAME, "W6bZuc") # find the header of the destination
+                            #add the city in the excel file
+                            sheet.cell(row=i-1, column=num*5+2).value = City.text
+                            Date = destination.find_element(By.CLASS_NAME, "CQYfx") # find the date of the destination
+                            #add the date in the excel file
+                            sheet.cell(row=i-1, column=num*5+3).value = Date.text
+                            Price = destination.find_element(By.CLASS_NAME, "QB2Jof") # find the price of the destination
+                            #add the price in the excel file
+                            sheet.cell(row=i-1, column=num*5+4).value = Price.text
+                            
+                            
+                        else:
+                            continue
+                except:
+                    continue
+                finally:
+                    continue
+
+            driver.quit()
+        except:
+            continue
+        
+    book.save('Toronto2.xlsx')        
