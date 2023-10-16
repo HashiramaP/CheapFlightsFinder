@@ -41,7 +41,7 @@ while t_f:
     if iter == 2000:
         t_f = False
     else:
-        current_result = FindFlights(lien, price)
+        current_result = FindFlights(lien, int(price))
         if len(current_result) == 0:
             print("No results found!")
         
