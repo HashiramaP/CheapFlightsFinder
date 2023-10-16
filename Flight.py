@@ -160,8 +160,6 @@ def GetLinks(url_list, fly1):
                 pass
     return links
 
-#lien = [['Caraibes', 'https://www.google.com/travel/explore?tfs=CBwQAxooEgoyMDIzLTEyLTI3agwIAxIIL20vMDUycDdyDAgEEggvbS8wMjYxbRooEgoyMDI0LTAxLTA1agwIBBIIL20vMDI2MW1yDAgDEggvbS8wNTJwN0ABSAFwAYIBCwj___________8BmAEBsgEEGAEgAQ&tfu=GgAqAggD'], ['Amérique du Nord', 'https://www.google.com/travel/explore?tfs=CBwQAxooEgoyMDIzLTEyLTI3agwIAxIIL20vMDUycDdyDAgEEggvbS8wNTlnNBooEgoyMDI0LTAxLTA1agwIBBIIL20vMDU5ZzRyDAgDEggvbS8wNTJwN0ABSAFwAYIBCwj___________8BmAEBsgEEGAEgAQ&tfu=GgAqAA']]
+lien = [['Caraibes', 'https://www.google.com/travel/explore?tfs=CBwQAxooEgoyMDIzLTEyLTI3agwIAxIIL20vMDUycDdyDAgEEggvbS8wMjYxbRooEgoyMDI0LTAxLTA1agwIBBIIL20vMDI2MW1yDAgDEggvbS8wNTJwN0ABSAFwAYIBCwj___________8BmAEBsgEEGAEgAQ&tfu=GgAqAggD'], ['Amérique du Nord', 'https://www.google.com/travel/explore?tfs=CBwQAxooEgoyMDIzLTEyLTI3agwIAxIIL20vMDUycDdyDAgEEggvbS8wNTlnNBooEgoyMDI0LTAxLTA1agwIBBIIL20vMDU5ZzRyDAgDEggvbS8wNTJwN0ABSAFwAYIBCwj___________8BmAEBsgEEGAEgAQ&tfu=GgAqAA']]
 
-#fly = [['Grand Cayman', 805.0], ['Miami', 839.0], ['Cancún', 703.0]]
-
-#print(GetLinks(lien, fly))
+print(FindFlights(lien, 850))
