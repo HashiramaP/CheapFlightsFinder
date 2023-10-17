@@ -117,13 +117,30 @@ def FindFlights(url_list, aim):
     return voyage
 
 def GetLinks(link, dests):
-    new_desr = []
+    new_dests = []
+    for i in dests:
+        new_dests += [i[0]]
 
-    return True
-    
+    billets_url = []
 
-lien = [['Amérique du Nord', 'https://www.google.com/travel/explore?tfs=CBwQAxooEgoyMDIzLTEyLTI3agwIAxIIL20vMDUycDdyDAgEEggvbS8wNTlnNBooEgoyMDI0LTAxLTA1agwIBBIIL20vMDU5ZzRyDAgDEggvbS8wNTJwN0ABSAFwAYIBCwj___________8BmAEBsgEEGAEgAQ&tfu=GgAqAA']]
+    for dest in new_dests:
+        driver = webdriver.Chrome()
 
-josh = "https://www.google.com/travel/flights?tfs=CBwQARoaEgoyMDIzLTEwLTIzagwIAxIIL20vMDUycDcaGhIKMjAyMy0xMC0yOXIMCAMSCC9tLzA1MnA3QAFIAXABggELCP___________wGYAQE&tfu=KgIIAw"
+        driver.get(link)
 
-print(FindFlights(lien, 850))
+        case = driver.find_elements(By.CLASS_NAME, "II2One")
+        case[2].clear() # clear the cell
+        case[2].send_keys(dest)
+        sleep(1) 
+        search_dep = driver.find_elements(By.CLASS_NAME, "CwL3Ec") # find the city button
+        search_dep[0].click() # click the city button
+        case[2].send_keys(Keys.ENTER)
+        case[2].send_keys(Keys.ENTER)
+
+        sleep(3)
+
+        billets_url += [[dest, driver.current_url]]
+
+        driver.quit()
+
+    return billets_url
