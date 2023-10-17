@@ -47,8 +47,11 @@ while t_f:
         
         # Print only if the current result is different from the previous result
         if current_result != previous_result:
-            print("New result found!")
-            print(current_result)
+            if iter == 1:
+                print(current_result)
+            else:
+                print("New result found!")
+                print(current_result)
         
         # Update the previous result for the next iteration
         previous_result = current_result
