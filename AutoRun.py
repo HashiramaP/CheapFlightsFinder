@@ -1,5 +1,5 @@
 import Flight
-from Flight import InitialLink, FindFlights
+from Flight import InitialLinks, FindFlights, FirstLink, GetLinks
 from time import sleep
 
 t_f = True
@@ -33,7 +33,9 @@ date2 = input("Enter a return date (Ex: 29 octobre): ")
 
 price = input("Enter the maximum price you are willing to pay without the dollar sign (Ex: 500): ")
 
-lien = InitialLink(vacances, city, [date1, date2])
+lien = FirstLink(city, [date1, date2])
+
+links = InitialLinks(lien, vacances)
 
 while t_f:
     iter += 1
@@ -41,7 +43,7 @@ while t_f:
     if iter == 2000:
         t_f = False
     else:
-        current_result = FindFlights(lien, int(price))
+        current_result = FindFlights(links, int(price))
         if len(current_result) == 0:
             print("No results found!")
         
@@ -52,6 +54,7 @@ while t_f:
             else:
                 print("New result found!")
                 print(current_result)
+                print(GetLinks(lien, current_result))
         
         # Update the previous result for the next iteration
         previous_result = current_result
