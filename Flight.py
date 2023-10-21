@@ -9,6 +9,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
 
 vacances = ["Caraibes", "Amérique du Nord"]
 
@@ -79,7 +84,7 @@ def InitialLinks(link, dests):
 
 def FindFlights(url_list, aim):
 
-    voyage = []
+    voyages = []
     for j in url_list:
             dest = j[0]
             link = j[1]
@@ -103,18 +108,18 @@ def FindFlights(url_list, aim):
                         if dest == "Amérique du Nord":
                             if City.text == "Cancún" or City.text == "Miami" or City.text == "Honolulu":
                                 if prix <= aim:
-                                    voyage += [[City.text, prix]]
+                                    voyages += [[City.text, prix]]
 
                         else:               
                             if prix <= aim:
-                                voyage += [[City.text, prix]]
+                                voyages += [[City.text, prix]]
             except:
                 pass
             
             finally:
                 driver.quit()
 
-    return voyage
+    return voyages
 
 def GetLinks(link, dests):
     new_dests = []
@@ -144,3 +149,36 @@ def GetLinks(link, dests):
         driver.quit()
 
     return billets_url
+
+def message(subject="A CheapFlight has been found!",
+                text="", img=None,
+                attachment=None):
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        msg.attach(MIMEText(text))
+        return msg
+
+def automail(billets_url, voyages):
+    smtp = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp.ehlo()
+    smtp.starttls()
+    smtp.login('cheapflight819@gmail.com', 'wrxg elaa hech scar')
+
+    email_text = "Hi, We have found the following CheapFlights:\n\n"
+
+    for voyage in voyages:
+        City, prix = voyage
+        for billet in billets_url:
+            dest, link = billet
+            if dest == City:
+                email_text += f"City: {City}\nPrice: {prix}\nLink: {link}\n\n"
+            else:
+                pass
+
+    msg = message("CheapFlights Found", email_text)
+    to = ["aymenzebentout@gmail.com", "parsa.homayouni@gmail.com"]
+    smtp.sendmail(from_addr="cheapflight819@gmail.com",
+                to_addrs=to, msg=msg.as_string())
+
+    smtp.quit()
+    return 0

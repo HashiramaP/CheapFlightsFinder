@@ -1,5 +1,5 @@
 import Flight
-from Flight import InitialLinks, FindFlights, FirstLink, GetLinks
+from Flight import InitialLinks, FindFlights, FirstLink, GetLinks, automail, message
 from time import sleep
 
 t_f = True
@@ -51,10 +51,13 @@ while t_f:
         if current_result != previous_result:
             if iter == 1:
                 print(current_result)
+                mail_info = (GetLinks(lien, current_result))
+                automail(mail_info, current_result)
             else:
                 print("New result found!")
                 print(current_result)
-                print(GetLinks(lien, current_result))
+                mail_info = (GetLinks(lien, current_result))
+                automail(mail_info, current_result)
         
         # Update the previous result for the next iteration
         previous_result = current_result
