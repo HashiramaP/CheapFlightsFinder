@@ -63,11 +63,13 @@ while t_f:
                     print(current_result)
                     mail_info = (GetLinks(lien, current_result))
                     automail(mail_info, current_result, mail)
+                    print("email sent!")
                 else:
                     print("New result found!")
                     print(current_result)
                     mail_info = (GetLinks(lien, current_result))
                     automail(mail_info, current_result, mail)
+                    print("email sent!")
             
             # Update the previous result for the next iteration
             previous_result = current_result
