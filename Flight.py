@@ -28,6 +28,8 @@ def FirstLink(ville, dates):
 
     case = driver.find_elements(By.CLASS_NAME, "II2One")
 
+    sleep(3)
+
     case[0].clear() # clear the cell
     case[0].send_keys(ville) # add departure city
     sleep(2)
@@ -158,7 +160,7 @@ def message(subject="A CheapFlight has been found!",
         msg.attach(MIMEText(text))
         return msg
 
-def automail(billets_url, voyages):
+def automail(billets_url, voyages, email):
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
     smtp.ehlo()
     smtp.starttls()
@@ -176,7 +178,9 @@ def automail(billets_url, voyages):
                 pass
 
     msg = message("CheapFlights Found", email_text)
-    to = ["aymenzebentout@gmail.com", "parsa.homayouni@gmail.com"]
+    to = []
+    for mail in email:
+        to += [mail]
     smtp.sendmail(from_addr="cheapflight819@gmail.com",
                 to_addrs=to, msg=msg.as_string())
 
