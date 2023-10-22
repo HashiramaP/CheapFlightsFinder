@@ -1,9 +1,5 @@
-import openpyxl
-import bs4
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from fake_useragent import UserAgent
-from openpyxl import Workbook, load_workbook
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
