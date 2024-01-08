@@ -22,16 +22,17 @@ while con.upper() == "YES":
     con = input("Do you wish to add another destination? (Yes/No): ")
 
 
-#ask which departure city
+#enter which departure city
 city = "ottawa"
 
-#ask which dates
+#enter which dates
 date1 = "20 janvier"
 date2 = "27 janvier"
 
-#enter the maximum price
-mail = "parsa.homayouni@gmail.com"
+#enter the email adtresses
+mail = ["parsa.homayouni@gmail.com"]
 
+#enter the maximum price
 price = 700
 
 lien = FirstLink(city, [date1, date2])
