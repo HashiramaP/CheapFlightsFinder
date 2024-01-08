@@ -1,4 +1,3 @@
-import Flight
 from Flight import InitialLinks, FindFlights, FirstLink, GetLinks, automail, message
 from time import sleep
 
@@ -24,25 +23,17 @@ while con.upper() == "YES":
 
 
 #ask which departure city
-city = input("Enter a departure city (Ex: Montréal): ")
+city = "ottawa"
 
 #ask which dates
-date1 = input("Enter a departure date (Ex: 23 octobre): ")
-date2 = input("Enter a return date (Ex: 29 octobre): ")
+date1 = "20 janvier"
+date2 = "27 janvier"
 
 #enter the maximum price
-mail1 = input("Enter an email adress (Ex: name.lastname@gmail.com): ")
-mail.append(mail1)
-con = input("Do you wish to add another email adress? (Yes/No): ")
+mail = "parsa.homayouni@gmail.com"
 
-while con.upper() == "YES":
-    mail1 = input("Enter an email adress (Ex: name.lastname@gmail.com): ")
-    mail.append(mail1)
-    con = input("Do you wish to add another email adress? (Yes/No): ")
+price = 700
 
-price = input("Enter the maximum price you are willing to pay without the dollar sign (Ex: 500): ")
-
-print([date1, date2])
 lien = FirstLink(city, [date1, date2])
 
 links = InitialLinks(lien, vacances)
@@ -74,6 +65,6 @@ while t_f:
             # Update the previous result for the next iteration
             previous_result = current_result
 
-            sleep(60)
+            sleep(1800)
     except:
         pass
